@@ -1,16 +1,23 @@
+import AppProviders from "@/providers/AppProviders";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Cinzel_Decorative, Manrope } from "next/font/google";
+
+import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
+import { Toaster } from "sonner";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const cinzel = Cinzel_Decorative({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  weight: ["400", "700", "900"],
+  display: "swap",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -21,14 +28,19 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={cn(
+          cinzel.variable,
+          manrope.className,
+          "antialiased bg-[#F0F8FF]"
+        )}
       >
-        {children}
+        <AppProviders>{children}</AppProviders>
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );

@@ -4,9 +4,7 @@ import ProductCard from "@/components/shared/cards/product-card";
 const Page = () => {
   return (
     <div>
-      <div
-       
-      >
+      <div>
         <Hero />
       </div>
 

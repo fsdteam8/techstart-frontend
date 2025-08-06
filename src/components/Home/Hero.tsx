@@ -4,19 +4,24 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="min-h-[650px] text-white flex flex-col justify-center items-center bg-gradient-to-r from-[#23173F] via-black to-black">
-      <div className="container flex justify-between items-center">
+    <div className="min-h-[650px] pb-24 text-white flex flex-col justify-center items-center lg:bg-gradient-to-r bg-gradient-to-b from-[#23173F] via-black to-black">
+      <div className="container flex lg:flex-row flex-col gap-5 justify-between items-center">
         <div>
-          <h1 className="lg:text-[96px] lg:max-w-3xl font-bold font-cinzel leading-[120px]">
+          <h1 className="lg:text-[96px] text-[50px] lg:max-w-3xl font-bold font-cinzel lg:leading-[120px] text-center lg:text-start">
             Your High, Your Way...
           </h1>
-          <button className="mt-4 mb-8">
-            Not sure where to start? Take a quiz!
-          </button>
+          <div className="text-center lg:text-start">
+            <button className="mt-4 mb-8">
+              Not sure where to start? Take a quiz!
+            </button>
+          </div>
 
-          <div className="space-x-5">
-            <Button className="h-[58px] w-[246px] text-center">Shop Now</Button>
-            <Button className="bg-inherit border border-white hover:border-none h-[58px] w-[246px] text-center">
+          <div className="space-x-5 text-center lg:text-start">
+            <Button className="text-center">Shop Now</Button>
+            <Button
+              variant="outline"
+              className="bg-transparent border border-white/50"
+            >
               Learn More
             </Button>
           </div>

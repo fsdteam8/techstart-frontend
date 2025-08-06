@@ -10,13 +10,13 @@ import { CircleAlert, CircleOff } from "lucide-react";
 import { useEffect } from "react";
 
 const ProductContainer = () => {
-  const { category, experience, dosage } = useProductFilterState();
+  const { category, experience, dosage, location } = useProductFilterState();
 
   const { data, isLoading, error } = useQuery<GetAllProductsResponse>({
-    queryKey: ["products", category, experience, dosage],
+    queryKey: ["products", category, experience, dosage, location],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?category=${category}&experience=${experience}&dosage=${dosage}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?category=${category}&experience=${experience}&dosage=${dosage}&location=${location}`
       ).then((res) => res.json()),
   });
 

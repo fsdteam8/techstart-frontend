@@ -7,7 +7,11 @@ import { useProductFilterState } from "@/zustand/products/productFilter";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-const CategorySelector = () => {
+interface CategorySelectorProps {
+  onCategoryChange?: () => void;
+}
+
+const CategorySelector = ({ onCategoryChange }: CategorySelectorProps) => {
   const { category, setCategory } = useProductFilterState();
   const { data, isLoading, error } = useQuery<GetAllCategoriesResponse>({
     queryKey: ["categories"],
@@ -33,7 +37,10 @@ const CategorySelector = () => {
           item._id !== category && "bg-black/20 hover:bg-black/30"
         )}
         key={item._id}
-        onClick={() => setCategory(item._id)}
+        onClick={() => {
+          setCategory(item._id);
+          onCategoryChange?.();
+        }}
       >
         <Image
           src={item.image}

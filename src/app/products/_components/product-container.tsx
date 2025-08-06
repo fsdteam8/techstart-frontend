@@ -7,6 +7,7 @@ import { GetAllProductsResponse } from "@/types/products";
 import { useProductFilterState } from "@/zustand/products/productFilter";
 import { useQuery } from "@tanstack/react-query";
 import { CircleAlert, CircleOff } from "lucide-react";
+import { useEffect } from "react";
 
 const ProductContainer = () => {
   const { category, experience, dosage } = useProductFilterState();
@@ -18,6 +19,11 @@ const ProductContainer = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?category=${category}&experience=${experience}&dosage=${dosage}`
       ).then((res) => res.json()),
   });
+
+  useEffect(() => {
+    // Scroll to top on filter change
+    window.scrollTo(0, 0);
+  }, [category, experience, dosage]);
 
   let content;
 

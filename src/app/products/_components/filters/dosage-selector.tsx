@@ -46,7 +46,11 @@ const data = [
   },
 ];
 
-const DosageSelector = () => {
+interface DosageSelectorProps {
+  onDosageChange?: () => void;
+}
+
+const DosageSelector = ({ onDosageChange }: DosageSelectorProps) => {
   const { dosage, setDosage } = useProductFilterState();
   return (
     <div className="w-full space-y-[24px]">
@@ -59,7 +63,10 @@ const DosageSelector = () => {
           <Button
             variant={dosage === item.value ? "default" : "outline"}
             key={item.id}
-            onClick={() => setDosage(item.value)}
+            onClick={() => {
+              setDosage(item.value);
+              onDosageChange?.();
+            }}
           >
             {item.name}
           </Button>

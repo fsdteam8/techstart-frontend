@@ -9,9 +9,16 @@ interface ProductCardProps {
   data?: Product;
 }
 
+const image: Record<"Low Potency" | "Medium Potency" | "High Potency", string> =
+  {
+    "Low Potency": "/icons/low.svg",
+    "Medium Potency": "/icons/medium.svg",
+    "High Potency": "/icons/high.svg",
+  };
+
 const ProductCard = ({ data }: ProductCardProps) => {
   return (
-    <Card className="w-full max-w-sm rounded-[14px] overflow-hidden shadow-lg">
+    <Card className="w-full max-w-sm rounded-[14px] overflow-hidden shadow-lg mx-auto">
       <div className="relative h-[236px]">
         <Image
           src={
@@ -32,7 +39,19 @@ const ProductCard = ({ data }: ProductCardProps) => {
           </span>
           <div>
             <div className="font-semibold flex items-center gap-1">
-              <Image src="/icons/high.svg" alt="High" width={15} height={15} />{" "}
+              <Image
+                src={
+                  image[
+                    (data?.dosage as
+                      | "Low Potency"
+                      | "Medium Potency"
+                      | "High Potency") ?? "High Potency"
+                  ]
+                }
+                alt={data?.dosage ?? "High"}
+                width={15}
+                height={15}
+              />{" "}
               {data?.dosage}
             </div>
           </div>

@@ -2,9 +2,11 @@ import AppProviders from "@/providers/AppProviders";
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Manrope } from "next/font/google";
 
+import Navbar from "@/components/shared/section/navbar/navbar";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { Toaster } from "sonner";
+import TopbarCarousel from "../components/shared/section/topbar/topbar";
 import "./globals.css";
 
 const cinzel = Cinzel_Decorative({
@@ -39,6 +41,8 @@ export default function RootLayout({
           "antialiased bg-[#F0F8FF]"
         )}
       >
+        <TopbarCarousel />
+        <Navbar />
         <AppProviders>{children}</AppProviders>
         <Toaster position="bottom-right" richColors />
       </body>

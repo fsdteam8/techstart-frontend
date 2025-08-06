@@ -3,12 +3,10 @@ import FeaturedCollection from "@/components/Home/FeaturedCollection";
 import Hero from "@/components/Home/Hero";
 import RewardCard from "@/components/Home/RewardCard";
 import ProductCard from "@/components/shared/cards/product-card";
-import TreeWrapper from "@/providers/tree-wrapper";
 
 const Page = () => {
   return (
     <div>
-
       <div className="z-10">
         <Hero />
       </div>

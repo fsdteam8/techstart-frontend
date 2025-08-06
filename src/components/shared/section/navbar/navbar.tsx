@@ -17,7 +17,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigationItems = [
-    { name: "Home", href: "#" },
+    { name: "Home", href: "/" },
     { name: "Products", href: "/products" },
     { name: "Learn", href: "#" },
     { name: "About Us", href: "#" },

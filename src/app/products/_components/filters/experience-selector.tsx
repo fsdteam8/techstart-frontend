@@ -40,7 +40,13 @@ const data = [
   },
 ];
 
-const ExperienceSelector = () => {
+interface ExperienceSelectorProps {
+  onExperienceChange?: () => void;
+}
+
+const ExperienceSelector = ({
+  onExperienceChange,
+}: ExperienceSelectorProps) => {
   const { experience, setExperience } = useProductFilterState();
   return (
     <div className="w-full space-y-[24px]">
@@ -53,7 +59,10 @@ const ExperienceSelector = () => {
           <Button
             variant={experience === item.value ? "default" : "outline"}
             key={item.id}
-            onClick={() => setExperience(item.value)}
+            onClick={() => {
+              setExperience(item.value);
+              onExperienceChange?.();
+            }}
           >
             {item.name}
           </Button>

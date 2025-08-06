@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const navigationItems = [
     { name: "Home", href: "#" },
-    { name: "Products", href: "#" },
+    { name: "Products", href: "/products" },
     { name: "Learn", href: "#" },
     { name: "About Us", href: "#" },
     { name: "Contact", href: "#" },
@@ -36,13 +36,13 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               {navigationItems.slice(0, 2).map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
                   className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
               <NavigationMenu>
                 <NavigationMenuList>
@@ -66,13 +66,13 @@ const Navbar = () => {
               </NavigationMenu>
 
               {navigationItems.slice(3, 5).map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
                   className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -5,16 +6,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useProductFilterState } from "@/zustand/products/productFilter";
 
 const StateSelector = () => {
+  const { location, setLocation } = useProductFilterState();
   return (
     <div className="w-full space-y-[24px]">
       <h1 className="text-primary font-semibold text-[20px] border-b-primary/80 border-b-2 pb-[8px]">
         Shop By State
       </h1>
 
-      <Select>
-        <SelectTrigger className="border-primary/50 border-[1px]  focus:ring-0 focus:border-primary">
+      <Select value={location} onValueChange={setLocation}>
+        <SelectTrigger className="border-primary/50 border-[1px]   focus:ring-0 focus:border-primary">
           <SelectValue placeholder="Select locations" />
         </SelectTrigger>
         <SelectContent>

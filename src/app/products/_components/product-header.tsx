@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Filter } from "lucide-react";
+import MobileFilter from "./filters/mobile-filter";
 
 const ProductHeader = () => {
   return (
@@ -23,9 +22,7 @@ const ProductHeader = () => {
           </span>
         </div>
 
-        <Button>
-          <Filter /> Filter
-        </Button>
+        <MobileFilter />
       </div>
     </div>
   );

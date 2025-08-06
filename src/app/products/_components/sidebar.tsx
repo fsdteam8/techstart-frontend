@@ -1,5 +1,3 @@
-"use client";
-
 import CategorySelector from "./filters/category-selector";
 import ClearFilterButton from "./filters/clear-filter";
 import DosageSelector from "./filters/dosage-selector";

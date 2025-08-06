@@ -9,6 +9,7 @@ import RewardCard from "@/components/Home/RewardCard";
 const Page = () => {
   return (
     <div>
+
       <div className="z-10">
         <Hero />
       </div>

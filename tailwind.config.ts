@@ -94,7 +94,6 @@ const config: Config = {
         "scroll-mobile": "scroll-left 8s linear infinite",
         "scroll-desktop": "scroll-left 20s linear infinite",
       },
-     
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

@@ -1,6 +1,7 @@
 import AppProviders from "@/providers/AppProviders";
 import type { Metadata } from "next";
 import { Cinzel_Decorative, Manrope } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 import Navbar from "@/components/shared/section/navbar/navbar";
 import { cn } from "@/lib/utils";
@@ -45,6 +46,7 @@ export default function RootLayout({
         <Navbar />
         <AppProviders>{children}</AppProviders>
         <Toaster position="bottom-right" richColors />
+        <NextTopLoader showSpinner={false} color="#1E2A38" />
       </body>
     </html>
   );

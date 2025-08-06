@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
 import Image from "next/image";
 
 const ProductCard = () => {
@@ -15,17 +14,19 @@ const ProductCard = () => {
         />
       </div>
       <CardContent className="p-4 space-y-3">
-        <div className="flex justify-between items-center">
+        <div className="space-y-5">
           <div className="flex items-center gap-2 font-bold">Cannabis Product 1</div>
 
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className="w-4 h-4 fill-yellow-400 text-yellow-400"
-              />
-            ))}
+        <div className="flex items-center gap-1 p-[8px] bg-[#F0EDF9] justify-between">
+          <span className="font-semibold">Relaxing</span>
+          <div>
+            <div className="font-semibold flex items-center gap-1">
+              <Image src="/icons/high.svg" alt="High" width={15} height={15} />{" "}
+              High
+            </div>
           </div>
+        </div>
+
         </div>
 
         <p className="text-sm text-gray-600 leading-relaxed">

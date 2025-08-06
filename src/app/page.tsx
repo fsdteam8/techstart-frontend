@@ -1,3 +1,4 @@
+import AboutComponent from "@/components/Home/AboutComponent";
 import DiscountedProducts from "@/components/Home/DiscountedProducts";
 import ExperienceSelector from "@/components/Home/ExperienceSelector";
 import FeaturedCollection from "@/components/Home/FeaturedCollection";
@@ -30,6 +31,10 @@ const Page = () => {
 
       <div>
         <DiscountedProducts />
+      </div>
+
+      <div>
+        <AboutComponent />
       </div>
     </div>
   );

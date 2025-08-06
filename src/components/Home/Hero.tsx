@@ -5,7 +5,7 @@ import Image from "next/image";
 const Hero = () => {
   return (
     <div className="min-h-[650px] pb-24 text-white flex flex-col justify-center items-center lg:bg-gradient-to-r bg-gradient-to-b from-[#23173F] via-black to-black">
-      <div className="container flex lg:flex-row flex-col gap-5 justify-between items-center">
+      <div className="container flex lg:flex-row flex-col gap-5 justify-between items-center relative z-0">
         <div>
           <h1 className="lg:text-[96px] text-[50px] lg:max-w-3xl font-bold font-cinzel lg:leading-[120px] text-center lg:text-start">
             Your High, Your Way...

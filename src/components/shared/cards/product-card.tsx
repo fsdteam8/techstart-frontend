@@ -57,6 +57,8 @@ const ProductCard = ({ data }: ProductCardProps) => {
           </div>
         </div>
 
+        </div>
+
         <p className="text-sm text-gray-600 leading-relaxed">
           {truncate(data?.description ?? "", 126)}
         </p>

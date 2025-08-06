@@ -15,12 +15,17 @@ const ProductCard = () => {
         />
       </div>
       <CardContent className="p-4 space-y-3">
-        <div className="flex items-center gap-2">Cannabis Product 1</div>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2 font-bold">Cannabis Product 1</div>
 
-        <div className="flex items-center gap-1">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-          ))}
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className="w-4 h-4 fill-yellow-400 text-yellow-400"
+              />
+            ))}
+          </div>
         </div>
 
         <p className="text-sm text-gray-600 leading-relaxed">

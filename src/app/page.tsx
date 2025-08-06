@@ -5,11 +5,12 @@ import FeaturedCollection from "@/components/Home/FeaturedCollection";
 import Hero from "@/components/Home/Hero";
 import PopularProducts from "@/components/Home/PopularProducts";
 import RewardCard from "@/components/Home/RewardCard";
+import FaqComponent from "@/components/shared/section/Faq/FAQComponent";
+import TreeWrapper from "@/providers/tree-wrapper";
 
 const Page = () => {
   return (
     <div>
-
       <div className="z-10">
         <Hero />
       </div>
@@ -18,13 +19,15 @@ const Page = () => {
         <ExperienceSelector />
       </div>
 
-      <div>
-        <FeaturedCollection />
-      </div>
+      <TreeWrapper>
+        <div>
+          <FeaturedCollection />
+        </div>
 
-      <div>
-        <RewardCard />
-      </div>
+        <div>
+          <RewardCard />
+        </div>
+      </TreeWrapper>
 
       <div>
         <PopularProducts />
@@ -36,6 +39,10 @@ const Page = () => {
 
       <div>
         <AboutComponent />
+      </div>
+
+      <div>
+        <FaqComponent />
       </div>
     </div>
   );

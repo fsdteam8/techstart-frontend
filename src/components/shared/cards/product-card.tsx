@@ -14,7 +14,8 @@ const ProductCard = () => {
         />
       </div>
       <CardContent className="p-4 space-y-3">
-        <div className="flex items-center gap-2">Cannabis Product 1</div>
+        <div className="space-y-5">
+          <div className="flex items-center gap-2 font-bold">Cannabis Product 1</div>
 
         <div className="flex items-center gap-1 p-[8px] bg-[#F0EDF9] justify-between">
           <span className="font-semibold">Relaxing</span>
@@ -24,6 +25,8 @@ const ProductCard = () => {
               High
             </div>
           </div>
+        </div>
+
         </div>
 
         <p className="text-sm text-gray-600 leading-relaxed">

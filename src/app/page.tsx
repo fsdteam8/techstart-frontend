@@ -1,9 +1,10 @@
+import AboutComponent from "@/components/Home/AboutComponent";
+import DiscountedProducts from "@/components/Home/DiscountedProducts";
 import ExperienceSelector from "@/components/Home/ExperienceSelector";
 import FeaturedCollection from "@/components/Home/FeaturedCollection";
 import Hero from "@/components/Home/Hero";
+import PopularProducts from "@/components/Home/PopularProducts";
 import RewardCard from "@/components/Home/RewardCard";
-import ProductCard from "@/components/shared/cards/product-card";
-import TreeWrapper from "@/providers/tree-wrapper";
 
 const Page = () => {
   return (
@@ -25,11 +26,16 @@ const Page = () => {
         <RewardCard />
       </div>
 
-      <div className="bg-white py-[100px] container w-full h-auto grid grid-cols-1 md:grid-cols-3  lg:grid-cols-4 gap-[24px] mt-[200px]">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+      <div>
+        <PopularProducts />
+      </div>
+
+      <div>
+        <DiscountedProducts />
+      </div>
+
+      <div>
+        <AboutComponent />
       </div>
     </div>
   );

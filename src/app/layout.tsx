@@ -9,6 +9,7 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import TopbarCarousel from "../components/shared/section/topbar/topbar";
 import "./globals.css";
+import Footer from "@/components/shared/Footer/Footer";
 
 const cinzel = Cinzel_Decorative({
   subsets: ["latin"],
@@ -44,7 +45,8 @@ export default function RootLayout({
       >
         <TopbarCarousel />
         <Navbar />
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>{children}</AppProviders>\
+        <Footer />
         <Toaster position="bottom-right" richColors />
         <NextTopLoader showSpinner={false} color="#1E2A38" />
       </body>

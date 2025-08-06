@@ -21,14 +21,12 @@ const StateSelector = () => {
           <SelectValue placeholder="Select locations" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Locations</SelectItem>
-          <SelectItem value="dhaka">Dhaka</SelectItem>
-          <SelectItem value="chittagong">Chittagong</SelectItem>
-          <SelectItem value="khulna">Khulna</SelectItem>
-          <SelectItem value="rajshahi">Rajshahi</SelectItem>
-          <SelectItem value="sylhet">Sylhet</SelectItem>
-          <SelectItem value="barisal">Barisal</SelectItem>
-          <SelectItem value="rangpur">Rangpur</SelectItem>
+          <SelectItem value={"all"}>All Locations</SelectItem>
+          {usStates.map((state) => (
+            <SelectItem key={state} value={state}>
+              {state}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
@@ -36,3 +34,56 @@ const StateSelector = () => {
 };
 
 export default StateSelector;
+
+const usStates = [
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+];

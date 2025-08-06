@@ -5,7 +5,6 @@ import FeaturedCollection from "@/components/Home/FeaturedCollection";
 import Hero from "@/components/Home/Hero";
 import PopularProducts from "@/components/Home/PopularProducts";
 import RewardCard from "@/components/Home/RewardCard";
-import ProductCard from "@/components/shared/cards/product-card";
 import FaqComponent from "@/components/shared/section/Faq/FAQComponent";
 import TreeWrapper from "@/providers/tree-wrapper";
 

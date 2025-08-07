@@ -21,7 +21,7 @@ const MobileFilterBody = ({ open, onOpenChange }: Props) => {
     >
       <ScrollArea className="h-[400px] px-4 ">
         <div className="pb-[30px] space-y-[25px]">
-          <StateSelector />
+          <StateSelector onStateChange={() => onOpenChange(false)} />
           <CategorySelector onCategoryChange={() => onOpenChange(false)} />
           <ExperienceSelector onExperienceChange={() => onOpenChange(false)} />
           <DosageSelector onDosageChange={() => onOpenChange(false)} />

@@ -8,7 +8,11 @@ import {
 } from "@/components/ui/select";
 import { useProductFilterState } from "@/zustand/products/productFilter";
 
-const StateSelector = () => {
+interface Props {
+  onStateChange?: () => void;
+}
+
+const StateSelector = ({ onStateChange }: Props) => {
   const { location, setLocation } = useProductFilterState();
   return (
     <div className="w-full space-y-[24px]">
@@ -16,7 +20,13 @@ const StateSelector = () => {
         Shop By State
       </h1>
 
-      <Select value={location} onValueChange={setLocation}>
+      <Select
+        value={location}
+        onValueChange={(value) => {
+          setLocation(value);
+          onStateChange?.();
+        }}
+      >
         <SelectTrigger className="border-primary/50 border-[1px]   focus:ring-0 focus:border-primary">
           <SelectValue placeholder="Select locations" />
         </SelectTrigger>

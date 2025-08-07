@@ -1,6 +1,7 @@
 export type Product = {
   _id: string;
   name: string;
+  slug: string;
   batch: string;
   description: string;
   disclaimers: string;
@@ -30,4 +31,10 @@ export type GetAllProductsResponse = {
   total: number;
   page: number;
   pages: number;
+};
+
+export type GetProductBySlugResponse = {
+  success: boolean;
+  data: Product;
+  message: string;
 };

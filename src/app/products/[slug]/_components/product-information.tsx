@@ -1,13 +1,38 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { dosaceIcons } from "@/constants/icons";
+import { cn } from "@/lib/utils";
 import { Product } from "@/types/products";
+import useCartStore from "@/zustand/cart";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { memo, useEffect, useState } from "react";
+import ProductAction from "./product-action";
+
+import StateDisplay from "./state-display";
 
 interface Props {
   product: Product;
 }
 
 const ProductInformation = ({ product: p }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const {
+    quantity,
+    setQuantity,
+    price: storedPrice,
+    setPrice,
+  } = useCartStore();
+
+  useEffect(() => {
+    if (setPrice) {
+      setPrice({
+        price: p.prices[0].price,
+        quantity: p.prices[0].quantity,
+        unit: p.prices[0].unit,
+      });
+    }
+  }, [p.prices, setPrice]);
   return (
     <div className="space-y-[25px]">
       <div className="flex items-center justify-start gap-[20px]">
@@ -43,7 +68,17 @@ const ProductInformation = ({ product: p }: Props) => {
         {p.prices.map((price, index) => (
           <Button
             key={index}
-            className="flex flex-col items-center gap-1 h-auto px-[40px]"
+            className={cn(
+              "flex flex-col items-center gap-1 h-auto px-[40px]",
+              price.price !== storedPrice?.price &&
+                "bg-black/20 hover:bg-black/30"
+            )}
+            onClick={() => {
+              if (setPrice) {
+                setPrice(price);
+              }
+            }}
+            variant={price.price === storedPrice?.price ? "default" : "outline"}
           >
             <span className="font-semibold text-lg">
               {price.quantity}
@@ -53,8 +88,42 @@ const ProductInformation = ({ product: p }: Props) => {
           </Button>
         ))}
       </div>
+
+      <div className="flex items-center gap-[30px]">
+        <div className="flex flex-col gap-1 w-fit">
+          <h5 className="text-[#707070]">QTY</h5>
+          <Input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-fit">
+          <h5>Total</h5>
+          <span className="font-semibold">
+            ${(quantity * (storedPrice?.price || 0)).toFixed(2)}
+          </span>
+        </div>
+      </div>
+
+      <ProductAction />
+
+      <div className="flex items-center justify-center gap-5 text-[#2F2F2F] text-[14px]">
+        <p>Ships within 24 hours</p>
+        <StateDisplay
+          open={isOpen}
+          setOpen={setIsOpen}
+          trigger={
+            <Button variant="link" onClick={() => setIsOpen(!isOpen)}>
+              See available states <ArrowRight className="ml-2" />
+            </Button>
+          }
+          restrictedStates={p.restrictedStates.map((item) => item.state)}
+        />
+      </div>
     </div>
   );
 };
 
-export default ProductInformation;
+export default memo(ProductInformation);

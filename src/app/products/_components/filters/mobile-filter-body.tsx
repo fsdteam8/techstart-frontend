@@ -19,7 +19,7 @@ const MobileFilterBody = ({ open, onOpenChange }: Props) => {
       title="Filter Products"
       description="Use the filters to narrow down your product search."
     >
-      <ScrollArea className="h-[400px] px-4 ">
+      <ScrollArea className="h-[80vh] px-4 ">
         <div className="pb-[30px] space-y-[25px]">
           <StateSelector onStateChange={() => onOpenChange(false)} />
           <CategorySelector onCategoryChange={() => onOpenChange(false)} />

@@ -1,10 +1,13 @@
 "use client";
 import { Card } from "@/components/ui/card";
+import { ProductImage } from "@/components/ui/custom/productImageSwipe";
 import { TextEffect } from "@/components/ui/text-effect";
+import { fetchProductBySlug } from "@/lib/api/product";
 import { GetProductBySlugResponse } from "@/types/products";
 import { useQuery } from "@tanstack/react-query";
 import { CircleOff, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useMemo } from "react";
 import ProductInformation from "./product-information";
 
 const ProductGallery = dynamic(
@@ -22,11 +25,18 @@ const ProductDetailsContainer = ({ decodedSlug }: Props) => {
   const { data, isLoading, error, isError } =
     useQuery<GetProductBySlugResponse>({
       queryKey: ["productDetails", decodedSlug],
-      queryFn: () =>
-        fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products/slug/${decodedSlug}`
-        ).then((res) => res.json()),
+      queryFn: () => fetchProductBySlug(decodedSlug),
+      staleTime: 1000 * 60 * 5, // optional
     });
+
+  const productImages = useMemo(() => {
+    return data?.data.photo.map((src, index) => ({
+      id: index.toString(),
+      src,
+      alt: data.data.name ?? "",
+      title: data.data.name ?? "",
+    })) as ProductImage[];
+  }, [data]);
 
   let content;
 
@@ -50,17 +60,11 @@ const ProductDetailsContainer = ({ decodedSlug }: Props) => {
       </div>
     );
   } else if (data && data.success) {
-    const images = data.data.photo.map((src, index) => ({
-      id: index.toString(),
-      src,
-      alt: data.data.name,
-      title: data.data.name,
-    }));
     content = (
       <>
         <div className="flex gap-[30px] md:flex-row flex-col">
           <div className="flex-1">
-            <ProductGallery images={images} />
+            <ProductGallery images={productImages} />
           </div>
           <div className="flex-1">
             <ProductInformation product={data.data} />

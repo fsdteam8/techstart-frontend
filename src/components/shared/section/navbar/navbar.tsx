@@ -1,5 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Logo from "@/components/ui/logo";
 import {
   NavigationMenu,
@@ -10,10 +18,15 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
-const Navbar = () => {
+interface Props {
+  isLoggedin: boolean;
+}
+
+const Navbar = ({ isLoggedin }: Props) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigationItems = [
@@ -85,9 +98,36 @@ const Navbar = () => {
             <button className="text-gray-700 hover:text-purple-600 transition-colors">
               <ShoppingCart className="h-5 w-5" />
             </button>
-            <button className="text-gray-700 hover:text-purple-600 transition-colors">
-              <User className="h-5 w-5" />
-            </button>
+            {isLoggedin ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    size="icon"
+                    className="text-gray-700 bg-transparent hover:bg-primary/30 hover:text-purple-600 transition-colors"
+                  >
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await signOut();
+                    }}
+                    className="cursor-pointer"
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild>
+                <Link href="/login">Login</Link>
+              </Button>
+            )}
 
             {/* Mobile menu button */}
             <button

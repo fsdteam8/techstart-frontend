@@ -7,6 +7,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { memo } from "react";
 
 interface Props {
   decodedSlug: string;
@@ -45,4 +46,4 @@ const TopProductDetailsBar = ({ decodedSlug }: Props) => {
   );
 };
 
-export default TopProductDetailsBar;
+export default memo(TopProductDetailsBar);

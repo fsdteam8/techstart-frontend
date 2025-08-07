@@ -4,20 +4,35 @@ import { dosaceIcons } from "@/constants/icons";
 import { cn } from "@/lib/utils";
 import { Product } from "@/types/products";
 import useCartStore from "@/zustand/cart";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import ProductAction from "./product-action";
+
+import StateDisplay from "./state-display";
 
 interface Props {
   product: Product;
 }
 
 const ProductInformation = ({ product: p }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const {
     quantity,
     setQuantity,
     price: storedPrice,
     setPrice,
   } = useCartStore();
+
+  useEffect(() => {
+    if (setPrice) {
+      setPrice({
+        price: p.prices[0].price,
+        quantity: p.prices[0].quantity,
+        unit: p.prices[0].unit,
+      });
+    }
+  }, [p.prices, setPrice]);
   return (
     <div className="space-y-[25px]">
       <div className="flex items-center justify-start gap-[20px]">
@@ -90,6 +105,22 @@ const ProductInformation = ({ product: p }: Props) => {
             ${(quantity * (storedPrice?.price || 0)).toFixed(2)}
           </span>
         </div>
+      </div>
+
+      <ProductAction />
+
+      <div className="flex items-center justify-center gap-5 text-[#2F2F2F] text-[14px]">
+        <p>Ships within 24 hours</p>
+        <StateDisplay
+          open={isOpen}
+          setOpen={setIsOpen}
+          trigger={
+            <Button variant="link" onClick={() => setIsOpen(!isOpen)}>
+              See available states <ArrowRight className="ml-2" />
+            </Button>
+          }
+          restrictedStates={p.restrictedStates.map((item) => item.state)}
+        />
       </div>
     </div>
   );

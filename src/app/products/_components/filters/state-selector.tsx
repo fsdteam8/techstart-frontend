@@ -45,7 +45,7 @@ const StateSelector = ({ onStateChange }: Props) => {
 
 export default StateSelector;
 
-const usStates = [
+export const usStates = [
   "Alabama",
   "Alaska",
   "Arizona",

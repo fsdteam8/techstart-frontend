@@ -14,7 +14,7 @@ interface QuantityState {
 }
 
 const useCartStore = create<QuantityState>((set) => ({
-  quantity: 0, // Initial quantity
+  quantity: 1, // Initial quantity
   setQuantity: (value: number) => set({ quantity: value }),
   price: undefined, // Initial price is undefined
   setPrice: (value: Price) => set({ price: value }),

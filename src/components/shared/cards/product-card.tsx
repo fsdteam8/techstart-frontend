@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { dosaceIcons } from "@/constants/icons";
 import { truncate } from "@/lib/utils";
 import { Product } from "@/types/products";
 import Image from "next/image";
@@ -8,13 +9,6 @@ import Link from "next/link";
 interface ProductCardProps {
   data?: Product;
 }
-
-const image: Record<"Low Potency" | "Medium Potency" | "High Potency", string> =
-  {
-    "Low Potency": "/icons/low.svg",
-    "Medium Potency": "/icons/medium.svg",
-    "High Potency": "/icons/high.svg",
-  };
 
 const ProductCard = ({ data }: ProductCardProps) => {
   return (
@@ -41,7 +35,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
             <div className="font-semibold flex items-center gap-1">
               <Image
                 src={
-                  image[
+                  dosaceIcons[
                     (data?.dosage as
                       | "Low Potency"
                       | "Medium Potency"
@@ -69,7 +63,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium"
             asChild
           >
-            <Link href={`/products/${data?.name}`} className="w-fit">
+            <Link href={`/products/${data?.slug}`} className="w-fit">
               Buy Now
             </Link>
           </Button>

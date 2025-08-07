@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { dosaceIcons } from "@/constants/icons";
 import { Product } from "@/types/products";
 import Image from "next/image";
+import { memo } from "react";
 
 interface Props {
   product: Product;
@@ -57,4 +58,4 @@ const ProductInformation = ({ product: p }: Props) => {
   );
 };
 
-export default ProductInformation;
+export default memo(ProductInformation);

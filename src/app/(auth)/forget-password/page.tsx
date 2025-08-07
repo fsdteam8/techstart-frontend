@@ -1,0 +1,23 @@
+import ForgetPasswordForm from "./_components/forget-password-form";
+
+const Page = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#945FD4] to-[#340C58] flex items-center justify-center p-4">
+      <div className="w-full max-w-[500px] bg-white rounded-2xl shadow-2xl overflow-hidden p-8 lg:p-12">
+        <div className="max-w-[400px] mx-auto space-y-5">
+          <div>
+            <h1 className="text-center text-2xl font-semibold">
+              Forget Passowrd
+            </h1>
+            <p className="text-center text-gray-400 text-[14px]">
+              Enter your email to receive the OTP
+            </p>
+          </div>
+          <ForgetPasswordForm />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Page;

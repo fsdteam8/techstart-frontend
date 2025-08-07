@@ -98,36 +98,38 @@ const Navbar = ({ isLoggedin }: Props) => {
             <button className="text-gray-700 hover:text-purple-600 transition-colors">
               <ShoppingCart className="h-5 w-5" />
             </button>
-            {isLoggedin ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="icon"
-                    className="text-gray-700 bg-transparent hover:bg-primary/30 hover:text-purple-600 transition-colors"
-                  >
-                    <User className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      await signOut();
-                    }}
-                    className="cursor-pointer"
-                  >
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button asChild>
-                <Link href="/login">Login</Link>
-              </Button>
-            )}
+            <div className="hidden md:block">
+              {isLoggedin ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      size="icon"
+                      className="text-gray-700 bg-transparent hover:bg-primary/30 hover:text-purple-600 transition-colors"
+                    >
+                      <User className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={async () => {
+                        await signOut();
+                      }}
+                      className="cursor-pointer"
+                    >
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button asChild>
+                  <Link href="/login">Login</Link>
+                </Button>
+              )}
+            </div>
 
             {/* Mobile menu button */}
             <button
@@ -157,6 +159,19 @@ const Navbar = ({ isLoggedin }: Props) => {
                   {item.name}
                 </a>
               ))}
+
+              {!isLoggedin ? (
+                <Button asChild className="w-full">
+                  <Link href="/login">Login</Link>
+                </Button>
+              ) : (
+                <div className="space-y-3">
+                  <Button className="w-full">Profile</Button>
+                  <Button variant="outline" className="w-full">
+                    Logout
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}

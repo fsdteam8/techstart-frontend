@@ -43,7 +43,7 @@ const ResponsiveDialog = ({
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
 
-          <div className="">{children}</div>
+          <div className="h-[90vh]">{children}</div>
         </DrawerContent>
       </Drawer>
     );

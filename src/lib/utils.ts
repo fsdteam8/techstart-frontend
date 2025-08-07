@@ -11,3 +11,7 @@ export function truncate(str: string, maxLength: number): string {
   }
   return str.slice(0, maxLength - 3) + "...";
 }
+
+export function decodeSlug(slug: string): string {
+  return decodeURIComponent(slug);
+}

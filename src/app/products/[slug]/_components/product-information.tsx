@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { dosaceIcons } from "@/constants/icons";
+import { cn } from "@/lib/utils";
 import { Product } from "@/types/products";
+import useCartStore from "@/zustand/cart";
 import Image from "next/image";
 import { memo } from "react";
 
@@ -9,6 +12,12 @@ interface Props {
 }
 
 const ProductInformation = ({ product: p }: Props) => {
+  const {
+    quantity,
+    setQuantity,
+    price: storedPrice,
+    setPrice,
+  } = useCartStore();
   return (
     <div className="space-y-[25px]">
       <div className="flex items-center justify-start gap-[20px]">
@@ -44,7 +53,17 @@ const ProductInformation = ({ product: p }: Props) => {
         {p.prices.map((price, index) => (
           <Button
             key={index}
-            className="flex flex-col items-center gap-1 h-auto px-[40px]"
+            className={cn(
+              "flex flex-col items-center gap-1 h-auto px-[40px]",
+              price.price !== storedPrice?.price &&
+                "bg-black/20 hover:bg-black/30"
+            )}
+            onClick={() => {
+              if (setPrice) {
+                setPrice(price);
+              }
+            }}
+            variant={price.price === storedPrice?.price ? "default" : "outline"}
           >
             <span className="font-semibold text-lg">
               {price.quantity}
@@ -53,6 +72,24 @@ const ProductInformation = ({ product: p }: Props) => {
             <span>${price.price}</span>
           </Button>
         ))}
+      </div>
+
+      <div className="flex items-center gap-[30px]">
+        <div className="flex flex-col gap-1 w-fit">
+          <h5 className="text-[#707070]">QTY</h5>
+          <Input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+          />
+        </div>
+        <div className="flex flex-col gap-1 w-fit">
+          <h5>Total</h5>
+          <span className="font-semibold">
+            ${(quantity * (storedPrice?.price || 0)).toFixed(2)}
+          </span>
+        </div>
       </div>
     </div>
   );

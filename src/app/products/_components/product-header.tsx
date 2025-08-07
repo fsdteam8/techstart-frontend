@@ -7,9 +7,9 @@ const ProductHeader = () => {
         <h1 className="text-primary font-semibold text-[20px] md:text-[30px] ">
           Shop Products
         </h1>
-        <span className="text-primary text-[14px] md:text-[16px] font-normal">
+        {/* <span className="text-primary text-[14px] md:text-[16px] font-normal">
           24 products found
-        </span>
+        </span> */}
       </div>
 
       <div className="md:hidden flex justify-between items-center">

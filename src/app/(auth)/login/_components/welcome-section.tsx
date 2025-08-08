@@ -1,8 +1,13 @@
 import Image from "next/image";
 
-export default function WelcomeSection() {
+interface Props {
+  title: string;
+  description: string;
+}
+
+export default function WelcomeSection({ title, description }: Props) {
   return (
-    <div className="relative bg-gradient-to-br from-[#7d4df3] to-[#6b46c1] flex items-center justify-center p-8 lg:p-12 text-white overflow-hidden">
+    <div className="relative bg-gradient-to-br from-[#7d4df3] to-[#6b46c1] flex items-center justify-center p-8 lg:p-12 text-white overflow-hidden h-full">
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-xl" />
@@ -27,12 +32,10 @@ export default function WelcomeSection() {
         </div>
 
         <h1 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-          Welcome Back!
+          {title}
         </h1>
 
-        <p className="text-lg text-white/90 leading-relaxed">
-          You can sign in to access with your existing account.
-        </p>
+        <p className="text-lg text-white/90 leading-relaxed">{description}</p>
       </div>
     </div>
   );

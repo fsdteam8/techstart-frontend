@@ -146,7 +146,7 @@ export default function LoginForm() {
         <p className="text-[#6b6b6b] text-sm">
           {"Don't have an account? "}
           <Link
-            href="/signup"
+            href="/registration"
             className="text-[#7d4df3] hover:text-[#6b46c1] font-medium transition-colors"
           >
             sign up

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -29,7 +30,19 @@ interface ApiRes {
     accessToken: string;
   };
 }
+
+interface ResendApiRes {
+  success: boolean;
+  message: string;
+  data: {
+    _id: string;
+    email: string;
+    role: string;
+  };
+}
 const OTPForm = ({ token }: Props) => {
+  const [closeTimer, setCloseTimer] = useState(30);
+  const [resendDisabled, setResendDisabled] = useState(false);
   const router = useRouter();
 
   const { mutate, isPending } = useMutation<ApiRes>({
@@ -59,6 +72,48 @@ const OTPForm = ({ token }: Props) => {
       router.push(`/reset-password/${data.data.accessToken}`);
     },
   });
+
+  const { mutate: resetOTPMutate, isPending: isResending } =
+    useMutation<ResendApiRes>({
+      mutationKey: ["resend-otp"],
+      mutationFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/resend-forgot-otp`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": `application/json`,
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ).then((res) => res.json()),
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      onSuccess: (data) => {
+        if (!data.success) {
+          toast.error(data.message);
+        }
+
+        toast.success(data.message);
+        startResendTimer();
+      },
+    });
+
+  const startResendTimer = () => {
+    setCloseTimer(30);
+    setResendDisabled(true);
+    const timer = setInterval(() => {
+      setCloseTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setResendDisabled(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const form = useForm<OTPSchemaType>({
     resolver: zodResolver(otpSchema),
@@ -145,18 +200,20 @@ const OTPForm = ({ token }: Props) => {
             type="button"
             variant="link"
             className="text-gradient text-base font-normal leading-[19.2px] disabled:opacity-80 disabled:text-gray-500"
-            disabled={isPending}
-            onClick={() => {
-              //   resendOtp({ email: email });
-            }}
+            disabled={isPending || resendDisabled}
+            onClick={() => resetOTPMutate()}
           >
-            {true ? `Resend in ${15}s` : "RESEND OTP"}
+            {resendDisabled ? (
+              `Resend in ${closeTimer}s`
+            ) : (
+              <span>RESEND OTP {isResending && "..."}</span>
+            )}
           </Button>
         </div>
         <Button
           type="submit"
           className="w-full min-h-[45px]"
-          disabled={isPending}
+          disabled={isPending || isResending}
         >
           {isPending ? "Please wait..." : "Verify"}
         </Button>

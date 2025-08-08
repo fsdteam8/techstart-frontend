@@ -171,7 +171,13 @@ const Navbar = ({ isLoggedin }: Props) => {
               ) : (
                 <div className="space-y-3">
                   <Button className="w-full">Profile</Button>
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={async () => {
+                      await signOut();
+                    }}
+                  >
                     Logout
                   </Button>
                 </div>

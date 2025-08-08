@@ -1,4 +1,4 @@
-import OTPForm from "./_components/otp-form";
+import ResetPasswordForm from "./_components/reset-password-form";
 
 const Page = ({ params }: { params: { token: string } }) => {
   return (
@@ -6,12 +6,14 @@ const Page = ({ params }: { params: { token: string } }) => {
       <div className="w-full max-w-[500px] bg-white rounded-2xl shadow-2xl overflow-hidden p-8 lg:p-12">
         <div className="max-w-[400px] mx-auto space-y-5">
           <div>
-            <h1 className="text-center text-2xl font-semibold">Enter OTP</h1>
+            <h1 className="text-center text-2xl font-semibold">
+              Reset Password
+            </h1>
             <p className="text-center text-gray-400 text-[14px]">
-              An OTP has been sent to your email address please verify it below
+              Please kindly set your new password
             </p>
           </div>
-          <OTPForm token={params.token} />
+          <ResetPasswordForm token={params.token} />
         </div>
       </div>
     </div>

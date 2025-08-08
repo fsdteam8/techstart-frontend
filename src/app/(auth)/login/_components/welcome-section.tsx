@@ -31,11 +31,13 @@ export default function WelcomeSection({ title, description }: Props) {
           </div>
         </div>
 
-        <h1 className="text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+        <h1 className="text-2xl lg:text-5xl font-bold mb-4 leading-tight">
           {title}
         </h1>
 
-        <p className="text-lg text-white/90 leading-relaxed">{description}</p>
+        <p className="text-[14px] md:text-lg text-white/90 leading-relaxed">
+          {description}
+        </p>
       </div>
     </div>
   );

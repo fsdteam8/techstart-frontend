@@ -62,14 +62,16 @@ export function ResetPasswordForm({ token }: Props) {
     mutationFn: async (data) => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/change-password`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reset-password`,
           {
             method: "POST",
             headers: {
               "content-type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({
+              newPassword: data.password,
+            }),
           }
         );
 
@@ -88,19 +90,13 @@ export function ResetPasswordForm({ token }: Props) {
     onSuccess: (data: any) => {
       setLoading(true); // Show loading when updating
       if (!data.success) {
-        toast.error(data.message, {
-          position: "bottom-right",
-          richColors: true,
-        });
+        toast.error(data.message);
         setLoading(false);
         return;
       }
 
       // Show success toast and redirect
-      toast.success(data.message, {
-        position: "bottom-right",
-        richColors: true,
-      });
+      toast.success(data.message);
       router.push(`/login`);
     },
     onError: () => {
@@ -164,14 +160,6 @@ export function ResetPasswordForm({ token }: Props) {
       className="w-full"
     >
       {/* Page heading */}
-      <div className="space-y-2 text-center">
-        <h1 className="text-[28px] font-medium leading-[33.89px] text-[#1F2937]">
-          Reset Password
-        </h1>
-        <p className="text-[14px] font-normal text-[#6B7280]">
-          Create your new password
-        </p>
-      </div>
 
       {/* Form component */}
       <Form {...form}>

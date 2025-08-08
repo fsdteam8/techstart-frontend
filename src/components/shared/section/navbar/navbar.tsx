@@ -161,7 +161,11 @@ const Navbar = ({ isLoggedin }: Props) => {
               ))}
 
               {!isLoggedin ? (
-                <Button asChild className="w-full">
+                <Button
+                  asChild
+                  className="w-full"
+                  onClick={() => setIsMobileMenuOpen((p) => !p)}
+                >
                   <Link href="/login">Login</Link>
                 </Button>
               ) : (

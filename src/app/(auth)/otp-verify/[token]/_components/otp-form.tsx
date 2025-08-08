@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -179,16 +180,23 @@ const OTPForm = ({ token }: Props) => {
                   }
                 }
               }}
-              className={`!text-[20px] text-[#4E4E4E] !font-medium !leading-[45px] w-[33.83px] 
-              lg:w-[53px] h-[70px] lg:h-[70px] text-center text-xl rounded-[6px] lg:rounded-[8px] 
-              focus:outline-none  border-[1px] 
-              ${
-                form.formState.errors.otp
-                  ? "bg-red-200/50 border-red-500/50"
-                  : form.watch("otp")[i]
-                  ? "border-primary "
-                  : "border-[#121D42] bg-white"
-              }`}
+              className={cn(
+                // Base mobile styles
+                "text-[20px] text-[#4E4E4E] font-medium leading-[45px]",
+                "w-[45px] h-[55px] text-center rounded-[6px]",
+                "focus:outline-none border border-[#121D42] bg-white",
+
+                // Larger screens
+                "lg:w-[53px] lg:h-[70px] lg:rounded-[8px] lg:text-[20px]",
+
+                // Error state
+                form.formState.errors.otp && "bg-red-200/50 border-red-500/50",
+
+                // Filled state
+                !form.formState.errors.otp &&
+                  form.watch("otp")[i] &&
+                  "border-primary"
+              )}
             />
           ))}
         </div>
@@ -199,7 +207,7 @@ const OTPForm = ({ token }: Props) => {
           <Button
             type="button"
             variant="link"
-            className="text-gradient text-base font-normal leading-[19.2px] disabled:opacity-80 disabled:text-gray-500"
+            className="text-gradient text-base font-normal leading-[19.2px] disabled:opacity-80 disabled:text-gray-500 text-[14px]"
             disabled={isPending || resendDisabled}
             onClick={() => resetOTPMutate()}
           >

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -46,6 +46,10 @@ const OTPForm = ({ token }: Props) => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
+  const isNewUser = searchParams.get("isNewUser") ?? false;
+
   const { mutate, isPending } = useMutation<ApiRes>({
     mutationKey: ["verify-otp"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,6 +77,35 @@ const OTPForm = ({ token }: Props) => {
       router.push(`/reset-password/${data.data.accessToken}`);
     },
   });
+
+  const { mutate: verifyNewUser, isPending: isPendingNewVerification } =
+    useMutation<ApiRes>({
+      mutationKey: ["verify-otp-for-new-user"],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mutationFn: (otp: any) =>
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/verify-email`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            otp,
+          }),
+        }).then((res) => res.json()),
+      onError: (error) => {
+        toast.error(error.message);
+      },
+      onSuccess: (data) => {
+        if (!data.success) {
+          toast.error(data.message);
+          return;
+        }
+
+        toast.success(data.message);
+        router.push(`/login`);
+      },
+    });
 
   const { mutate: resetOTPMutate, isPending: isResending } =
     useMutation<ResendApiRes>({
@@ -124,8 +157,13 @@ const OTPForm = ({ token }: Props) => {
   });
 
   const handleSubmit = (values: OTPSchemaType) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mutate(values.otp as any);
+    if (!!isNewUser) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      verifyNewUser(values.otp as any);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      mutate(values.otp as any);
+    }
   };
 
   return (
@@ -208,7 +246,7 @@ const OTPForm = ({ token }: Props) => {
             type="button"
             variant="link"
             className="text-gradient text-base font-normal leading-[19.2px] disabled:opacity-80 disabled:text-gray-500 text-[14px]"
-            disabled={isPending || resendDisabled}
+            disabled={isPending || resendDisabled || isPendingNewVerification}
             onClick={() => resetOTPMutate()}
           >
             {resendDisabled ? (
@@ -221,9 +259,9 @@ const OTPForm = ({ token }: Props) => {
         <Button
           type="submit"
           className="w-full min-h-[45px]"
-          disabled={isPending || isResending}
+          disabled={isPending || isResending || isPendingNewVerification}
         >
-          {isPending ? "Please wait..." : "Verify"}
+          {isPending || isPendingNewVerification ? "Please wait..." : "Verify"}
         </Button>
       </form>
     </div>

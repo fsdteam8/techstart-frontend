@@ -76,7 +76,7 @@ const ProductDetailsContainer = ({ decodedSlug }: Props) => {
     );
   }
   return (
-    <Card className="container bg-white shadow-none md:shadow-md min-h-[400px] p-3 md:p-5">
+    <Card className=" bg-white shadow-none md:shadow-md min-h-[400px] p-3 md:p-5">
       {content}
     </Card>
   );

@@ -19,7 +19,7 @@ const config: Config = {
         DEFAULT: "1rem",
       },
       screens: {
-        "2xl": "1536px",
+        "2xl": "1336px",
       },
     },
     extend: {

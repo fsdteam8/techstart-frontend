@@ -24,7 +24,7 @@ const AddPurchaseModal = ({ onOpenChange, open }: Props) => {
       onOpenChange={onOpenChange}
       title="Billing Information"
     >
-      <div className="flex items-start gap-[30px]">
+      <div className="flex flex-col-reverse md:flex-row items-start gap-[30px]">
         <div className="flex-1">
           <CheckoutForm form={form} onSubmit={onSubmit} />
         </div>

@@ -21,7 +21,7 @@ const CheckoutForm = ({ form, onSubmit }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-3 max-w-3xl mx-auto py-10"
+        className="space-y-3 mx-auto py-10"
       >
         <div className="grid gap-4">
           <FormField

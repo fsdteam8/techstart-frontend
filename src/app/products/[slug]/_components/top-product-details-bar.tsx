@@ -16,7 +16,7 @@ interface Props {
 const TopProductDetailsBar = ({ decodedSlug }: Props) => {
   return (
     <div>
-      <div className="container flex justify-between items-center h-[80px] ">
+      <div className=" flex justify-between items-center h-[80px] ">
         <h1 className="text-primary md:text-[30px] text-[18px] font-semibold">
           Product Details
         </h1>

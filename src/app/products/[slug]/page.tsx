@@ -1,4 +1,5 @@
 import CertificateOfAnalysis from "@/components/shared/section/certificate of analysis/page";
+import FaqComponent from "@/components/shared/section/Faq/FAQComponent";
 import { fetchProductBySlug } from "@/lib/api/product";
 import { decodeSlug } from "@/lib/utils";
 import {
@@ -23,15 +24,19 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <div className="mb-[100px]">
+        <div className="container">
+          <TopProductDetailsBar decodedSlug={decodedSlug} />
+        </div>
+        <div className="mb-[100px] space-y-10">
           <div className="space-y-10 container">
-            <TopProductDetailsBar decodedSlug={decodedSlug} />
             <ProductDetailsContainer decodedSlug={decodedSlug} />
             <CertificateOfAnalysis />
           </div>
-          <div className="bg-white ">
+          <div className="bg-white md:py-[50px]">
             <WhereWeShip />
           </div>
+
+          <FaqComponent />
         </div>
       </HydrationBoundary>
     </div>

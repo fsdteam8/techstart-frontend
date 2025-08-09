@@ -9,6 +9,7 @@ import { CircleOff, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import ProductInformation from "./product-information";
+import ProductDetailsTabContainer from "./tabs/product-details-tab-container";
 
 const ProductGallery = dynamic(
   () => import("@/components/ui/custom/productImageSwipe"),
@@ -70,11 +71,12 @@ const ProductDetailsContainer = ({ decodedSlug }: Props) => {
             <ProductInformation product={data.data} />
           </div>
         </div>
+        <ProductDetailsTabContainer />
       </>
     );
   }
   return (
-    <Card className="container bg-white shadow-none md:shadow-md min-h-[400px] p-3 md:p-5">
+    <Card className=" bg-white shadow-none md:shadow-md min-h-[400px] p-3 md:p-5">
       {content}
     </Card>
   );

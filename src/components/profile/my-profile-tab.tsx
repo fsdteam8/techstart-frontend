@@ -23,7 +23,7 @@ export function MyProfileTab() {
             </h3>
             <p className="text-[#645949]">@besseedwards</p>
             <p className="text-sm text-[#645949]">
-              3891 Ranchview Dr. Richardson, California 62639
+              3891 Ranchview Dr. Richardson, California 123456
             </p>
           </div>
         </div>

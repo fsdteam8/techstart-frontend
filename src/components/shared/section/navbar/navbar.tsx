@@ -112,7 +112,9 @@ const Navbar = ({ isLoggedin }: Props) => {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <Link href="/profile">
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={async () => {
@@ -170,7 +172,13 @@ const Navbar = ({ isLoggedin }: Props) => {
                 </Button>
               ) : (
                 <div className="space-y-3">
-                  <Button className="w-full">Profile</Button>
+                  <Link
+                    href="/profile"
+                    className="text-gray-700 hover:text-purple-600 block px-3 py-2 text-base font-medium transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Profile 
+                  </Link>
                   <Button
                     variant="outline"
                     className="w-full"

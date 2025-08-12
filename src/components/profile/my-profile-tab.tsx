@@ -1,611 +1,152 @@
-/* eslint-disable */
-// @ts-nocheck
-
-"use client";
-
-import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RewardPointsCard } from "./reward-points-card";
 import Image from "next/image";
-import { Edit, Save, X, Upload, Trash2 } from "lucide-react";
-import { useState, useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "sonner";
-
-const profileSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  userName: z.string().min(1, "Username is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(1, "Phone number is required"),
-  country: z.string().min(1, "Country is required"),
-  state: z.string().min(1, "State is required"),
-  city: z.string().min(1, "City is required"),
-  address: z.string().min(1, "Address is required"),
-  texId: z.string().min(1, "Tax ID is required"),
-});
-
-type ProfileFormData = z.infer<typeof profileSchema>;
-
-interface UserProfile {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-  email: string;
-  phone: string;
-  country: string;
-  state: string;
-  city: string;
-  address: string;
-  texId: string;
-  points: number;
-  imageLink: string;
-  role: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  data: UserProfile;
-}
+import { Edit } from "lucide-react";
 
 export function MyProfileTab() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const queryClient = useQueryClient();
-  const { data: session } = useSession();
-
-  const form = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      userName: "",
-      email: "",
-      phone: "",
-      country: "",
-      state: "",
-      city: "",
-      address: "",
-      texId: "",
-    },
-  });
-
-  const getAuthToken = () => {
-    // Adjust this according to your session structure
-    if (session?.user && "accessToken" in session.user) {
-      return (session.user as { accessToken: string }).accessToken;
-    }
-    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODlhN2EyNjgyY2ZmN2M1ZTJiMTU1NTQiLCJlbWFpbCI6ImRlbW9AZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTQ5NjM3NjEsImV4cCI6MTc1NTU2ODU2MX0.GiV6SIgTxHkIOxLpZfhzOf12Q83r-Q6s3ff0BCve5kk";
-  };
-
-  const fetchUserProfile = async (): Promise<UserProfile> => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
-      {
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
-    if (!response.ok) throw new Error("Failed to fetch profile");
-    const data: ApiResponse = await response.json();
-    return data.data;
-  };
-
-  const updateUserProfile = async (
-    profileData: ProfileFormData & { image?: File }
-  ): Promise<UserProfile> => {
-    const formData = new FormData();
-
-    Object.entries(profileData).forEach(([key, value]) => {
-      if (key !== "image" && value !== undefined) {
-        formData.append(key, value.toString());
-      }
-    });
-
-    if (profileData.image) {
-      formData.append("image", profileData.image);
-    }
-
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_URL || "https://api.teachstar.com"
-      }/user/update-profile`,
-      {
-        method: "PUT",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to update profile");
-    }
-
-    const data: ApiResponse = await response.json();
-    return data.data;
-  };
-
-  const deleteUserProfile = async (): Promise<void> => {
-    const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_URL || "https://api.teachstar.com"
-      }/user/delete-profile`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${getAuthToken()}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to delete profile");
-    }
-  };
-
-  const {
-    data: userProfile,
-    isLoading,
-    error,
-  } = useQuery<UserProfile, Error, UserProfile>({
-    queryKey: ["userProfile"],
-    queryFn: fetchUserProfile,
-    onSuccess: (data: UserProfile) => {
-      form.reset({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        userName: data.userName,
-        email: data.email,
-        phone: data.phone,
-        country: data.country,
-        state: data.state,
-        city: data.city,
-        address: data.address,
-        texId: data.texId,
-      });
-    },
-  });
-
-  const updateProfileMutation = useMutation({
-    mutationFn: updateUserProfile,
-    onSuccess: (data) => {
-      queryClient.setQueryData(["userProfile"], data);
-      setIsEditing(false);
-      setSelectedImage(null);
-      setImagePreview(null);
-      toast.success("Profile updated successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to update profile");
-    },
-  });
-
-  const deleteProfileMutation = useMutation({
-    mutationFn: deleteUserProfile,
-    onSuccess: () => {
-      toast.success("Profile deleted successfully!");
-      // Optionally redirect user or clear session
-      // signOut() // Uncomment if you want to sign out after deletion
-    },
-    onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete profile");
-    },
-  });
-
-  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please select a valid image file");
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size must be less than 5MB");
-        return;
-      }
-
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const onSubmit = (data: ProfileFormData) => {
-    updateProfileMutation.mutate({
-      ...data,
-      ...(selectedImage && { image: selectedImage }),
-    });
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-    setSelectedImage(null);
-    setImagePreview(null);
-    form.reset();
-  };
-
-  const handleDeleteProfile = () => {
-    if (showDeleteConfirmation) {
-      deleteProfileMutation.mutate();
-      setShowDeleteConfirmation(false);
-    } else {
-      setShowDeleteConfirmation(true);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setShowDeleteConfirmation(false);
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#6B46C1]"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-red-500">Failed to load profile data</p>
-        <Button
-          onClick={() =>
-            queryClient.invalidateQueries({ queryKey: ["userProfile"] })
-          }
-          className="mt-4"
-        >
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  if (!userProfile) return null;
-
   return (
-    <div className="container mx-auto p-4 sm:p-6">
-      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-8 bg-[#F0EDF9] rounded-lg p-4 sm:p-6 lg:p-8 gap-6">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
-          <div className="relative">
-            <Image
-              width={120}
-              height={120}
-              src={
-                imagePreview ||
-                userProfile.imageLink ||
-                "/placeholder.svg?height=120&width=120&query=profile avatar"
-              }
-              alt="Profile"
-              className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-white shadow-lg"
-            />
-            {isEditing && (
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-0 right-0 bg-[#6B46C1] text-white rounded-full p-2 shadow-lg hover:bg-[#5a3ba3] transition-colors"
-              >
-                <Upload className="w-4 h-4" />
-              </button>
-            )}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageSelect}
-              className="hidden"
-            />
-          </div>
-          <div className="text-center sm:text-left">
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#645949]">
-              {userProfile.firstName} {userProfile.lastName}
+    <div className="">
+      <div className="flex items-start justify-between mb-8 bg-[#F0EDF9] rounded-lg">
+        <div className="flex items-center space-x-4 p-8 rounded-lg">
+          <Image
+            width={150}
+            height={150}
+            src="/placeholder.svg?height=80&width=80"
+            alt="Profile"
+            className="w-40 h-40 rounded-full object-cover"
+          />
+          <div>
+            <h3 className="text-2xl font-semibold text-[#645949]">
+              Bessie Edwards
             </h3>
-            <p className="text-[#645949]">@{userProfile.userName}</p>
-            <p className="text-sm text-[#645949] mt-1 max-w-xs">
-              {userProfile.address}, {userProfile.city}, {userProfile.state}
+            <p className="text-[#645949]">@besseedwards</p>
+            <p className="text-sm text-[#645949]">
+              3891 Ranchview Dr. Richardson, California 62639
             </p>
           </div>
         </div>
-        <div className="flex-shrink-0">
-          <RewardPointsCard points={userProfile.points} />
-        </div>
+        <RewardPointsCard points={200} />
       </div>
 
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 sm:space-y-8"
-      >
-        <div className="bg-[#F0EDF9] p-4 sm:p-6 lg:p-8 rounded-lg">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+      <div className="space-y-8 *:text-[#6B46C1]">
+        <div className="bg-[#F0EDF9] p-8 rounded-lg">
+          <div className="flex items-center justify-between mb-4]">
             <h4 className="text-lg font-semibold text-[#6b46c1]">
               Personal Information
             </h4>
-            <div className="flex gap-2">
-              {!isEditing ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsEditing(true)}
-                  className="text-white bg-[#6b46c1] border-[#6b46c1] hover:bg-[#5a3ba3] px-4 sm:px-8 py-2 "
-                >
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-              ) : (
-                <>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCancel}
-                    className="px-4 py-2 bg-transparent"
-                  >
-                    <X className="w-4 h-4 mr-2" />
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    disabled={updateProfileMutation.isPending}
-                    className="bg-[#6b46c1] hover:bg-[#5a3ba3] text-white px-4 py-2"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    {updateProfileMutation.isPending ? "Saving..." : "Save"}
-                  </Button>
-                </>
-              )}
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-white bg-[#6b46c1] border-[#6b46c1]  px-[38px] py-[10px]"
+            >
+              <Edit className="" />
+              Edit
+            </Button>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                First Name *
+                First Name
               </label>
-              <Input
-                {...form.register("firstName")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.firstName && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.firstName.message}
-                </p>
-              )}
+              <Input defaultValue="Bessie" className="border-[#e7e9ee]" />
             </div>
             <div>
               <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                Last Name *
+                Last Name
               </label>
-              <Input
-                {...form.register("lastName")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.lastName && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.lastName.message}
-                </p>
-              )}
+              <Input defaultValue="Edwards" className="border-[#e7e9ee]" />
             </div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                Username *
+                Email Address
               </label>
               <Input
-                {...form.register("userName")}
-                disabled={!isEditing}
+                defaultValue="alma.lawson@example.com"
                 className="border-[#e7e9ee]"
               />
-              {form.formState.errors.userName && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.userName.message}
-                </p>
-              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                Email Address *
+                Phone
               </label>
               <Input
-                {...form.register("email")}
-                disabled={!isEditing}
-                type="email"
+                defaultValue="(307) 555-0133"
                 className="border-[#e7e9ee]"
               />
-              {form.formState.errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.email.message}
-                </p>
-              )}
             </div>
           </div>
-
-          <div className="mb-4">
+          <div>
             <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-              Phone *
-            </label>
-            <Input
-              {...form.register("phone")}
-              disabled={!isEditing}
-              type="tel"
-              className="border-[#e7e9ee]"
-            />
-            {form.formState.errors.phone && (
-              <p className="text-red-500 text-sm mt-1">
-                {form.formState.errors.phone.message}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-[#F0EDF9] p-4 sm:p-6 lg:p-8 rounded-lg">
-          <h4 className="text-lg font-semibold text-[#6b46c1] mb-6">Address</h4>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                Country *
-              </label>
-              <Input
-                {...form.register("country")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.country && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.country.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                State *
-              </label>
-              <Input
-                {...form.register("state")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.state && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.state.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                City *
-              </label>
-              <Input
-                {...form.register("city")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.city && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.city.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-                TAX ID *
-              </label>
-              <Input
-                {...form.register("texId")}
-                disabled={!isEditing}
-                className="border-[#e7e9ee]"
-              />
-              {form.formState.errors.texId && (
-                <p className="text-red-500 text-sm mt-1">
-                  {form.formState.errors.texId.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
-              Address *
+              Bio
             </label>
             <Textarea
-              {...form.register("address")}
-              disabled={!isEditing}
-              className="border-[#e7e9ee] min-h-[80px]"
-              placeholder="Enter your full address"
+              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+              className="border-[#e7e9ee] min-h-[100px]"
             />
-            {form.formState.errors.address && (
-              <p className="text-red-500 text-sm mt-1">
-                {form.formState.errors.address.message}
-              </p>
-            )}
           </div>
         </div>
 
-        <div className="bg-red-50 border border-red-200 p-4 sm:p-6 rounded-lg">
-          <h4 className="text-lg font-semibold text-red-700 mb-4">
-            Danger Zone
-          </h4>
-          <p className="text-sm text-red-600 mb-4">
-            Once you delete your account, there is no going back. Please be
-            certain.
-          </p>
-
-          {!showDeleteConfirmation ? (
+        <div className="bg-[#F0EDF9] p-8 rounded-lg">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-lg font-semibold text-[#6b46c1]">Address</h4>
             <Button
-              type="button"
-              variant="destructive"
-              className="w-full sm:w-auto"
-              onClick={handleDeleteProfile}
-              disabled={deleteProfileMutation.isPending}
+              variant="outline"
+              size="sm"
+              className="text-white bg-[#6b46c1] border-[#6b46c1] px-[38px] py-[10px]"
             >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete Account
+              <Edit className="" /> Edit
             </Button>
-          ) : (
-            <div className="space-y-4">
-              <p className="text-red-700 font-medium">
-                Are you absolutely sure you want to delete your account? This
-                action cannot be undone.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={handleDeleteProfile}
-                  disabled={deleteProfileMutation.isPending}
-                  className="w-full sm:w-auto"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  {deleteProfileMutation.isPending
-                    ? "Deleting..."
-                    : "Yes, Delete My Account"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleCancelDelete}
-                  disabled={deleteProfileMutation.isPending}
-                  className="w-full sm:w-auto bg-transparent"
-                >
-                  Cancel
-                </Button>
-              </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
+                Country
+              </label>
+              <Input defaultValue="USA" className="border-[#e7e9ee]" />
             </div>
-          )}
+            <div>
+              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
+                City/State
+              </label>
+              <Input defaultValue="Alabama" className="border-[#e7e9ee]" />
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
+              Road/Ave
+            </label>
+            <Input
+              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              className="border-[#e7e9ee]"
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
+                Postal Code
+              </label>
+              <Input defaultValue="588558" className="border-[#e7e9ee]" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-[#4e4e4e] mb-1">
+                TAX ID
+              </label>
+              <Input
+                defaultValue="AFNY7555-0133"
+                className="border-[#e7e9ee]"
+              />
+            </div>
+          </div>
         </div>
-      </form>
+
+        <Button className="bg-[#6B46C1] hover:bg-[#301f57] !text-white">
+          Delete Account
+        </Button>
+      </div>
     </div>
   );
 }

@@ -115,7 +115,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[##F9FAFC]">
       {/* Decorative leaves */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[307px] h-[704px] opacity-20">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[307px] h-[704px] opacity-20 z-1">
         <Image
           width={160}
           height={80}
@@ -124,7 +124,7 @@ export default function ProfilePage() {
           className="w-full h-full object-contain"
         />
       </div>
-      <div className="absolute right-0 top-1/2 -translate-y-1/3 w-[307px] h-[704px] opacity-20">
+      <div className="absolute right-0 top-1/2 -translate-y-1/3 w-[307px] h-[704px] opacity-20 z-1">
         <Image
           width={160}
           height={80}
@@ -135,7 +135,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto z-10 relative">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-[#6b46c1] mb-8">Accounts</h2>
         </div>
@@ -147,7 +147,9 @@ export default function ProfilePage() {
         />
 
         {/* Tab Content */}
-        <div className=" rounded-lg shadow-sm">{renderTabContent()}</div>
+        <div className=" rounded-lg shadow-sm w-full mx-auto">
+          {renderTabContent()}
+        </div>
       </div>
 
       <LogoutModal

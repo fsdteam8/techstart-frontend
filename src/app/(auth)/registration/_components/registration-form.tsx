@@ -59,7 +59,7 @@ export default function RegistrationForm() {
     mutationKey: ["create-user"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: (reqBody: any) =>
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/register`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

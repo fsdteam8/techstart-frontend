@@ -54,7 +54,7 @@ const OTPForm = ({ token }: Props) => {
     mutationKey: ["verify-otp"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: (otp: any) =>
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify-token`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-token`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -83,7 +83,7 @@ const OTPForm = ({ token }: Props) => {
       mutationKey: ["verify-otp-for-new-user"],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mutationFn: (otp: any) =>
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/user/verify-email`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/verify-email`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -112,7 +112,7 @@ const OTPForm = ({ token }: Props) => {
       mutationKey: ["resend-otp"],
       mutationFn: () =>
         fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/resend-forgot-otp`,
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/resend-forgot-otp`,
           {
             method: "POST",
             headers: {

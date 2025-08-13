@@ -7,98 +7,26 @@ import { SettingsTab } from "@/components/profile/settings-tab";
 import { PurchaseHistoryTab } from "@/components/profile/purchase-history-tab";
 import { LogoutModal } from "@/components/profile/logout-modal";
 import Image from "next/image";
+import { usePurchaseHistory } from "@/hooks/use-purchase-history";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("My Profile");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const purchaseHistory = [
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$400.00",
-      date: "8 Dec, 2025",
-      points: 40,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-  ];
+  const { purchaseHistory } = usePurchaseHistory(currentPage, itemsPerPage);
+  console.log("Purchase History:", purchaseHistory);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
+  const handleLimitChange = (limit: number) => {
+    setItemsPerPage(limit);
+    setCurrentPage(1);
+  };
+
+  // Render the content based on the active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case "My Profile":
@@ -106,7 +34,14 @@ export default function ProfilePage() {
       case "Settings":
         return <SettingsTab />;
       case "Purchase History":
-        return <PurchaseHistoryTab purchaseHistory={purchaseHistory} />;
+        return (
+          <PurchaseHistoryTab
+            page={currentPage}
+            limit={itemsPerPage}
+            onPageChange={handlePageChange}
+            onLimitChange={handleLimitChange}
+          />
+        );
       default:
         return <MyProfileTab />;
     }

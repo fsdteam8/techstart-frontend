@@ -48,7 +48,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[##F9FAFC]">
+    <div className="min-h-screen bg-[##F9FAFC] md:mb-8 mb-4">
       {/* Decorative leaves */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[307px] h-[704px] opacity-20 z-1">
         <Image

@@ -113,14 +113,16 @@ const Navbar = ({ isLoggedin }: Props) => {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link href="/profile">
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer ">
+                        Profile
+                      </DropdownMenuItem>
                     </Link>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={async () => {
                         await signOut();
                       }}
-                      className="cursor-pointer"
+                      className="cursor-pointer text-red-600 hover:tracking-wider hover:"
                     >
                       Logout
                     </DropdownMenuItem>
@@ -177,7 +179,7 @@ const Navbar = ({ isLoggedin }: Props) => {
                     className="text-gray-700 hover:text-purple-600 block px-3 py-2 text-base font-medium transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Profile 
+                    Profile
                   </Link>
                   <Button
                     variant="outline"

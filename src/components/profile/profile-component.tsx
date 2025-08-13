@@ -7,98 +7,26 @@ import { SettingsTab } from "@/components/profile/settings-tab";
 import { PurchaseHistoryTab } from "@/components/profile/purchase-history-tab";
 import { LogoutModal } from "@/components/profile/logout-modal";
 import Image from "next/image";
+import { usePurchaseHistory } from "@/hooks/use-purchase-history";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("My Profile");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const purchaseHistory = [
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$400.00",
-      date: "8 Dec, 2025",
-      points: 40,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-    {
-      name: "Red Flower",
-      id: "#212-121",
-      amount: "$200.00",
-      date: "8 Dec, 2025",
-      points: 20,
-    },
-  ];
+  const { purchaseHistory } = usePurchaseHistory(currentPage, itemsPerPage);
+  console.log("Purchase History:", purchaseHistory);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
+  const handleLimitChange = (limit: number) => {
+    setItemsPerPage(limit);
+    setCurrentPage(1);
+  };
+
+  // Render the content based on the active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case "My Profile":
@@ -106,16 +34,23 @@ export default function ProfilePage() {
       case "Settings":
         return <SettingsTab />;
       case "Purchase History":
-        return <PurchaseHistoryTab purchaseHistory={purchaseHistory} />;
+        return (
+          <PurchaseHistoryTab
+            page={currentPage}
+            limit={itemsPerPage}
+            onPageChange={handlePageChange}
+            onLimitChange={handleLimitChange}
+          />
+        );
       default:
         return <MyProfileTab />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-[##F9FAFC]">
+    <div className="min-h-screen bg-[##F9FAFC] md:mb-8 mb-4">
       {/* Decorative leaves */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[307px] h-[704px] opacity-20">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[307px] h-[704px] opacity-20 z-1">
         <Image
           width={160}
           height={80}
@@ -124,7 +59,7 @@ export default function ProfilePage() {
           className="w-full h-full object-contain"
         />
       </div>
-      <div className="absolute right-0 top-1/2 -translate-y-1/3 w-[307px] h-[704px] opacity-20">
+      <div className="absolute right-0 top-1/2 -translate-y-1/3 w-[307px] h-[704px] opacity-20 z-1">
         <Image
           width={160}
           height={80}
@@ -135,7 +70,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto z-10 relative">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-[#6b46c1] mb-8">Accounts</h2>
         </div>
@@ -147,7 +82,9 @@ export default function ProfilePage() {
         />
 
         {/* Tab Content */}
-        <div className=" rounded-lg shadow-sm">{renderTabContent()}</div>
+        <div className=" rounded-lg shadow-sm w-full mx-auto">
+          {renderTabContent()}
+        </div>
       </div>
 
       <LogoutModal

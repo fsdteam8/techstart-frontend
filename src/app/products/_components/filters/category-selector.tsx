@@ -16,7 +16,7 @@ const CategorySelector = ({ onCategoryChange }: CategorySelectorProps) => {
   const { data, isLoading, error } = useQuery<GetAllCategoriesResponse>({
     queryKey: ["categories"],
     queryFn: () =>
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/category`).then((res) =>
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`).then((res) =>
         res.json()
       ),
   });

@@ -33,7 +33,7 @@ export default function ForgetPasswordForm() {
   const { mutate: sendOTP, isPending } = useMutation({
     mutationKey: ["forget-password"],
     mutationFn: (email: string) =>
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/forgot-password`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

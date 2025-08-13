@@ -16,7 +16,7 @@ const ProductContainer = () => {
     queryKey: ["products", category, experience, dosage, location],
     queryFn: () =>
       fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/products?category=${category}&experience=${experience}&dosage=${dosage}&location=${location}`
+        `${process.env.NEXT_PUBLIC_API_URL}/products?category=${category}&experience=${experience}&dosage=${dosage}&location=${location}`
       ).then((res) => res.json()),
   });
 

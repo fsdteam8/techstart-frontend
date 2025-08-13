@@ -328,8 +328,8 @@ export function MyProfileTab() {
   if (!userProfile) return null;
 
   return (
-    <div className="w-full">
-      <div className="flex flex-col lg:flex-row items-center lg:justify-between mb-8 bg-[#F0EDF9] rounded-lg px-4 sm:px-6 lg:px-8 gap-6">
+    <div className="w-full ">
+      <div className="flex flex-col lg:flex-row items-center lg:justify-between mb-8 bg-[#F0EDF9] rounded-lg px-4 sm:px-6 lg:px-8 py-2 gap-6">
         <div className="flex flex-col sm:flex-row items-center justify-center lg:items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <div className="relative">
             <Image
@@ -610,7 +610,7 @@ export function MyProfileTab() {
           </div>
         </div>
 
-        <div className="bg-red-50 border border-red-200 p-4 sm:p-6 rounded-lg">
+        <div className="bg-red-50 border border-red-200 p-4 sm:p-6 rounded-lg mb-8">
           <h4 className="text-lg font-semibold text-red-700 mb-4">
             Danger Zone
           </h4>
